@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'jwt_auth',
     'budget',
+    'expenses',
 ]
 
 AUTH_USER_MODEL = 'jwt_auth.User'

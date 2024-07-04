@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from .serializers import UserSerializer
 import jwt 
+from budget.models import Budget
 
 
 User = get_user_model()
@@ -44,6 +45,9 @@ class LoginView(APIView):
             settings.SECRET_KEY,
             algorithm='HS256'
         )
+
+        # users_budgets = Budget.objects.get(owner=user_to_login.id, many=True)
+        # if 
 
         return Response({'token': token, 'message': f"Welcome back {user_to_login.username}"})
     

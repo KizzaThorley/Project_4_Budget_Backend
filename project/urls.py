@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('jwt_auth.urls')),
     path('budget/', include('budget.urls')),
+    path('expense/', include('expenses.urls')),
 ]
