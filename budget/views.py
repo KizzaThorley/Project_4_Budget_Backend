@@ -16,7 +16,7 @@ class BudgetListView(APIView):
     permission_classes = (IsAuthenticated, )
     def get(self, request):
         budget = Budget.objects.filter(owner=request.user.id)
-        serialized_budget = BudgetSerializer(budget, many=True)
+        serialized_budget = PopulatedBudgetSerializer(budget, many=True)
         return Response(serialized_budget.data, status=status.HTTP_200_OK)
     
     def post(self, request):
