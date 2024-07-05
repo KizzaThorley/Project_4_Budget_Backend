@@ -45,9 +45,7 @@ class LoginView(APIView):
             settings.SECRET_KEY,
             algorithm='HS256'
         )
-
-        # users_budgets = Budget.objects.get(owner=user_to_login.id, many=True)
-        # if 
+        
 
         return Response({'token': token, 'message': f"Welcome back {user_to_login.username}"})
     

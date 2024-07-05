@@ -12,7 +12,7 @@ class Expense(models.Model):
     )
 	budget = models.ForeignKey(
         "budget.Budget",
-        related_name = 'budget',
+        related_name = 'expenses',
         on_delete = models.CASCADE,
     )
 	category = models.CharField(max_length=50)

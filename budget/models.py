@@ -13,3 +13,8 @@ class Budget(models.Model):
         on_delete = models.CASCADE,
     )
     date = models.DateTimeField(auto_now_add=True)
+    month = models.CharField(max_length=3)
+    year = models.FloatField()
+
+    class Meta:
+        unique_together = ('month', 'year', 'owner')
