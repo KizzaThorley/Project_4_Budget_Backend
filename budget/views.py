@@ -21,7 +21,7 @@ class BudgetListView(APIView):
     
     def post(self, request):
         request.data['owner'] = request.user.id
-        request.data['month'] = current_month
+        request.data['month'] = int(current_month)
         request.data['year'] = current_year
         print(request.data)
         budget_to_add = BudgetSerializer(data=request.data)
@@ -52,6 +52,8 @@ class BudgetDetailView(APIView):
     
     def put(self, request, pk):
         budget_to_edit = self.get_budget(pk=pk)
+        print(budget_to_edit.owner)
+        print(request.user)
         if budget_to_edit.owner != request.user:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         
