@@ -57,7 +57,7 @@ class ExpenseDetailView(APIView):
             return Response({ 'detail': str(e) }, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
     
     def delete(self, request, pk):
-        expense_to_delete = self.get_budget(pk=pk)
+        expense_to_delete = self.get_expense(pk=pk)
         if expense_to_delete.owner != request.user:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         expense_to_delete.delete()

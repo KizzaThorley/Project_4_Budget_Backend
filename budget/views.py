@@ -28,11 +28,12 @@ class BudgetListView(APIView):
         try: 
             budget_to_add.is_valid()
             budget_to_add.save()
-            return Response(budget_to_add.data, status=status.HTTP_201_CREATED)
+            budget_populated = budget_to_add.instance
+            serialized_budget = PopulatedBudgetSerializer(budget_populated)
+            return Response(serialized_budget.data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            print("Error")
+            print(e)
             return Response(budget_to_add.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
-
 
 class BudgetDetailView(APIView):
     permission_classes = (IsAuthenticated, )
@@ -52,8 +53,7 @@ class BudgetDetailView(APIView):
     
     def put(self, request, pk):
         budget_to_edit = self.get_budget(pk=pk)
-        print(budget_to_edit.owner)
-        print(request.user)
+
         if budget_to_edit.owner != request.user:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         
@@ -64,7 +64,9 @@ class BudgetDetailView(APIView):
         try:
             updated_budget.is_valid()
             updated_budget.save()
-            return Response(updated_budget.data, status=status.HTTP_202_ACCEPTED)
+            budget_populated = updated_budget.instance
+            serialized_budget = PopulatedBudgetSerializer(budget_populated)
+            return Response(serialized_budget.data, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             return Response({ 'detail': str(e) }, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
     
