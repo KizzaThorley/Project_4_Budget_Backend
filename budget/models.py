@@ -15,6 +15,7 @@ class Budget(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     month = models.IntegerField()
     year = models.FloatField()
+    savings = models.FloatField()
 
     class Meta:
         unique_together = ('month', 'year', 'owner')
