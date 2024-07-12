@@ -38,6 +38,8 @@ DEBUG = ENV == 'DEV'
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ['https://money-mapper-bd99db5b6ba8.herokuapp.com']
+
 
 # Application definition
 
