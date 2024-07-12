@@ -10,7 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+import django_on_heroku
+from dotenv import load_dotenv
+import dj_database_url
+load_dotenv()
+ENV = str(os.getenv('ENVIRONMENT', 'DEV'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,13 +25,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_1)%-)fc(7#f@zkxn%v(j2uxf^dwgngm-wk&%dd)=amd(ut*2b'
+
+
+if ENV == 'DEV':
+    # Replace the value below with your own secret and remove this comment.
+    SECRET_KEY = 'django-insecure-_1)%-)fc(7#f@zkxn%v(j2uxf^dwgngm-wk&%dd)=amd(ut*2b'
+else:
+    SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = ENV == 'DEV'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -84,14 +95,16 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+DATABASES = {}
+if ENV != 'DEV':
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)	
+else:
+    DATABASES['default'] =  {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'budget-api',
+        'NAME': 'budget-api', # < --- make sure you change this
         'HOST': 'localhost',
         'PORT': 5432
     }
-}
 
 
 # Password validation
@@ -145,3 +158,5 @@ REST_FRAMEWORK = {
     'jwt_auth.authentication.JWTAuthentication'
     ],
 }
+
+django_on_heroku.settings(locals())
